@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -11,7 +12,12 @@ class _SplashPageState extends State<SplashPage> {
     return Scaffold(
       body: Container(
         child: Center(
-          child: FlutterLogo(),
+          child: SvgPicture.asset(
+            'assets/be_better_logo.svg',
+            semanticsLabel: 'App logo',
+            height: 200,
+            width: 200,
+          ),
         ),
       ),
     );
