@@ -12,8 +12,8 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
 
-    Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, Routes.WELCOME_USER_NAME);
+    Future.delayed(Duration(seconds: 1), () {
+      Navigator.pushReplacementNamed(context, Routes.WELCOME);
     });
   }
 

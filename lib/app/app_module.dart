@@ -1,13 +1,11 @@
-import 'package:be_better/app/pages/welcome_user_name/welcome_user_name_bloc.dart';
+import 'package:be_better/app/app_bloc.dart';
+import 'package:be_better/app/app_widget.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
-import 'package:be_better/app/app_widget.dart';
-import 'package:be_better/app/app_bloc.dart';
 
 class AppModule extends ModuleWidget {
   @override
   List<Bloc> get blocs => [
-        Bloc((i) => WelcomeUserNameBloc()),
         Bloc((i) => AppBloc()),
       ];
 
