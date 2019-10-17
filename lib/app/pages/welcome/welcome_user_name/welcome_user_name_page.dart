@@ -1,5 +1,6 @@
 import 'package:be_better/app/pages/welcome/welcome_module.dart';
 import 'package:be_better/app/pages/welcome/welcome_user_name/welcome_user_name_bloc.dart';
+import 'package:be_better/app/shared/widgets/custom_form_field_widget.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeUserNamePage extends StatefulWidget {
@@ -88,53 +89,42 @@ class _WelcomeUserNamePageState extends State<WelcomeUserNamePage>
             FadeTransition(
               child: Form(
                 key: _formKey,
-                child: StreamBuilder<String>(
-                    stream: bloc.outName,
-                    initialData: "",
-                    builder: (context, snapshot) {
-                      final controller = bloc.nameTextController;
-                      controller.text = snapshot.data;
-                      if (snapshot.hasData)
-                        controller.selection = TextSelection.collapsed(
-                            offset: snapshot.data.length);
-                      return TextField(
-                        controller: bloc.nameTextController,
-                        onChanged: bloc.inName,
-                        onSubmitted: (value) {
-                          print("onSubmitted");
-                          _focusNode.unfocus();
-                        },
-                        textCapitalization: TextCapitalization.words,
-                        focusNode: _focusNode,
-                        decoration: InputDecoration(
-                          labelText: 'Nome',
-                          hintText: 'Alfredo da Silva',
-                          errorText: snapshot.error,
-                        ),
-                      );
-                    }),
+                autovalidate: true,
+                child: CustomFormFieldWidget(
+                  labelText: 'Nome',
+                  onChanged: bloc.inName,
+                  stream: bloc.outName,
+                  focusNode: _focusNode,
+                  onValidator: bloc.validateName,
+                ),
               ),
               opacity: opacity3Animation,
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // _animationController.repeat();
-          // if (_animationController.isCompleted)
-          //   _animationController.reverse();
-          // else
-          //   _animationController.forward();
-        },
-        child: Icon(
-          Icons.arrow_forward,
-          color: Colors.white,
-        ),
-        backgroundColor: Theme.of(context).primaryColor,
-        elevation: 6,
-      ),
+      floatingActionButton: StreamBuilder<bool>(
+          stream: bloc.outCanSubmit,
+          builder: (context, snapshot) {
+            print(snapshot.data);
+            if (snapshot.data) {
+              return FloatingActionButton(
+                onPressed: snapshot.data ? _saveForm : null,
+                child: Icon(
+                  Icons.arrow_forward,
+                  color: Colors.white,
+                ),
+                backgroundColor: Theme.of(context).primaryColor,
+                elevation: 6,
+              );
+            }
+            return Container();
+          }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  void _saveForm() {
+    print("Save form");
   }
 }
