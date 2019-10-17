@@ -17,6 +17,7 @@ class _WelcomeUserNamePageState extends State<WelcomeUserNamePage>
   Animation<double> opacity4Animation;
   AnimationController _animationController;
   FocusNode _focusNode = FocusNode();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -85,28 +86,34 @@ class _WelcomeUserNamePageState extends State<WelcomeUserNamePage>
               opacity: opacity2Animation,
             ),
             FadeTransition(
-              child: StreamBuilder<String>(
-                  stream: bloc.outName,
-                  initialData: "",
-                  builder: (context, snapshot) {
-                    final controller = bloc.nameTextController;
-                    controller.text = snapshot.data;
-                    return TextField(
-                      controller: bloc.nameTextController,
-                      onChanged: bloc.inName,
-                      onSubmitted: (value) {
-                        print("onSubmitted");
-                        _focusNode.unfocus();
-                      },
-                      textCapitalization: TextCapitalization.words,
-                      focusNode: _focusNode,
-                      decoration: InputDecoration(
-                        labelText: 'Nome',
-                        hintText: 'Alfredo da Silva',
-                        errorText: snapshot.error,
-                      ),
-                    );
-                  }),
+              child: Form(
+                key: _formKey,
+                child: StreamBuilder<String>(
+                    stream: bloc.outName,
+                    initialData: "",
+                    builder: (context, snapshot) {
+                      final controller = bloc.nameTextController;
+                      controller.text = snapshot.data;
+                      if (snapshot.hasData)
+                        controller.selection = TextSelection.collapsed(
+                            offset: snapshot.data.length);
+                      return TextField(
+                        controller: bloc.nameTextController,
+                        onChanged: bloc.inName,
+                        onSubmitted: (value) {
+                          print("onSubmitted");
+                          _focusNode.unfocus();
+                        },
+                        textCapitalization: TextCapitalization.words,
+                        focusNode: _focusNode,
+                        decoration: InputDecoration(
+                          labelText: 'Nome',
+                          hintText: 'Alfredo da Silva',
+                          errorText: snapshot.error,
+                        ),
+                      );
+                    }),
+              ),
               opacity: opacity3Animation,
             ),
           ],
@@ -114,7 +121,7 @@ class _WelcomeUserNamePageState extends State<WelcomeUserNamePage>
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _animationController.repeat();
+          // _animationController.repeat();
           // if (_animationController.isCompleted)
           //   _animationController.reverse();
           // else
