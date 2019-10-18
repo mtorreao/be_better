@@ -1,4 +1,3 @@
-import 'package:better_sales/src/shared/utils/simple_object.dart';
 import 'package:flutter/material.dart';
 
 class CustomDropdownWidgetV2<T extends SimpleObject> extends StatelessWidget {
@@ -50,4 +49,8 @@ class CustomDropdownWidgetV2<T extends SimpleObject> extends StatelessWidget {
           return Center(child: Text('Carregando...'));
         });
   }
+}
+
+abstract class SimpleObject {
+  String name;
 }
